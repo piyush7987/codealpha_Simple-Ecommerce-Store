@@ -290,5 +290,4 @@ For support and questions:
 
 **Built with ❤️ using modern web technologies**
 =======
-# codealpha_tasks
->>>>>>> c5d4b90311e774bdfe95bddb33df9edebf388121
+# codealpha_Simple-Ecommerce-Store
