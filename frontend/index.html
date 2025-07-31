@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2><i class="fas fa-shopping-bag"></i> ShopEasy</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link" onclick="showProducts()">Products</a>
+                <a href="#" class="nav-link" onclick="showCart()">
+                    Cart <span id="cart-count" class="cart-count">0</span>
+                </a>
+                <div class="auth-menu">
+                    <a href="#" class="nav-link" id="login-link" onclick="showLogin()">Login</a>
+                    <a href="#" class="nav-link" id="register-link" onclick="showRegister()">Register</a>
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <span id="user-name"></span>
+                        <div class="dropdown">
+                            <a href="#" onclick="showOrders()">My Orders</a>
+                            <a href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home-section" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to ShopEasy</h1>
+                <p>Discover amazing products at unbeatable prices</p>
+                <button class="cta-button" onclick="showProducts()">Shop Now</button>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products-section" class="products-section" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Products</h2>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label>Category:</label>
+                            <select id="category-filter">
+                                <option value="all">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Search:</label>
+                            <input type="text" id="search-input" placeholder="Search products...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Sort by:</label>
+                            <select id="sort-filter">
+                                <option value="createdAt-desc">Newest First</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="name-asc">Name: A to Z</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="products-grid" class="products-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+                <div id="pagination" class="pagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart-section" class="cart-section" style="display: none;">
+            <div class="container">
+                <h2>Shopping Cart</h2>
+                <div id="cart-items" class="cart-items">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                <div class="cart-summary">
+                    <div class="total">
+                        <strong>Total: $<span id="cart-total">0.00</span></strong>
+                    </div>
+                    <button id="checkout-btn" class="checkout-btn" onclick="showCheckout()">Proceed to Checkout</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Details Modal -->
+        <div id="product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="product-details">
+                    <!-- Product details will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkout-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeCheckoutModal()">&times;</span>
+                <div class="checkout-form">
+                    <h3>Checkout</h3>
+                    <form id="checkout-form">
+                        <h4>Shipping Address</h4>
+                        <input type="text" id="street" placeholder="Street Address" required>
+                        <input type="text" id="city" placeholder="City" required>
+                        <input type="text" id="state" placeholder="State" required>
+                        <input type="text" id="zipCode" placeholder="Zip Code" required>
+                        <input type="text" id="country" value="India" required>
+                        
+                        <h4>Payment Method</h4>
+                        <select id="paymentMethod">
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="debit_card">Debit Card</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                        
+                        <div class="order-summary">
+                            <h4>Order Summary</h4>
+                            <div id="checkout-items"></div>
+                            <div class="checkout-total">
+                                <strong>Total: $<span id="checkout-total">0.00</span></strong>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="place-order-btn">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Forms -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAuthModal()">&times;</span>
+                <div id="auth-forms">
+                    <!-- Login/Register forms will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <section id="orders-section" class="orders-section" style="display: none;">
+            <div class="container">
+                <h2>My Orders</h2>
+                <div id="orders-list" class="orders-list">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ShopEasy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/orders.js"></script>
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            checkAuthStatus();
+            loadCart();
+            updateCartCount();
+            loadCategories();
+        }
+
+        // Navigation functions
+        function showHome() {
+            hideAllSections();
+            document.getElementById('home-section').style.display = 'block';
+        }
+
+        function showProducts() {
+            hideAllSections();
+            document.getElementById('products-section').style.display = 'block';
+            loadProducts();
+        }
+
+        function showCart() {
+            hideAllSections();
+            document.getElementById('cart-section').style.display = 'block';
+            displayCart();
+        }
+
+        function showOrders() {
+            if (!isAuthenticated()) {
+                showToast('Please login to view orders', 'error');
+                showLogin();
+                return;
+            }
+            hideAllSections();
+            document.getElementById('orders-section').style.display = 'block';
+            loadUserOrders();
+        }
+
+        function hideAllSections() {
+            const sections = document.querySelectorAll('main section');
+            sections.forEach(section => section.style.display = 'none');
+        }
+
+        // Modal functions
+        function closeModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.getElementById('toast-container').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
